@@ -37,7 +37,7 @@ bool MenuScene::init()
         this->addChild(background, 0);
     }
 
-     AudioEngine::play2d("haha/Greenpath.mp3", true, 0.5f);
+    AudioEngine::play2d("haha/Greenpath.mp3", true, 0.5f);
 
     auto titleImage = Sprite::create("haha/menu_name.png");
     if (titleImage == nullptr)
@@ -46,8 +46,8 @@ bool MenuScene::init()
     }
     else
     {
-        titleImage->setScale(0.5f);
-        titleImage->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + titleImage->getContentSize().height - 100));
+        /*titleImage->setScale(0.5f);*/
+        titleImage->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + titleImage->getContentSize().height + 150));
         this->addChild(titleImage, 1);
     }
 
@@ -58,7 +58,7 @@ bool MenuScene::init()
     }
     else
     {
-        iconImage->setScale(0.5f);
+        /*iconImage->setScale(0.5f);*/
         iconImage->setPosition(Vec2(origin.x + visibleSize.width / 4, origin.y + visibleSize.height / 4));
         this->addChild(iconImage, 1);
     }
@@ -67,8 +67,8 @@ bool MenuScene::init()
     auto iconRight = Sprite::create("haha/main_menu_pointer_right.png");
     if (iconLeft && iconRight)
     {
-        iconLeft->setScale(0.3f);
-        iconRight->setScale(0.3f);
+        /*iconLeft->setScale(0.3f);
+        iconRight->setScale(0.3f);*/
         iconLeft->setVisible(false);
         iconRight->setVisible(false);
         this->addChild(iconLeft, 2);
@@ -78,16 +78,16 @@ bool MenuScene::init()
     Vector<MenuItem *> menuItems;
     auto createMenuItem = [&](const std::string &text, const Vec2 &position, const ccMenuCallback &callback)
     {
-        auto item = MenuItemLabel::create(Label::createWithTTF(text, "fonts/Marker Felt.ttf", 24), callback);
+        auto item = MenuItemLabel::create(Label::createWithTTF(text, "fonts/Marker Felt.ttf", 48), callback);
         item->setPosition(position);
         menuItems.pushBack(item);
         return item;
     };
 
     auto startItem = createMenuItem("Start Game", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 50), CC_CALLBACK_1(MenuScene::menuStartCallback, this));
-    auto optionItem = createMenuItem(notmute ? "Mute" : "Unmute", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 100), CC_CALLBACK_1(MenuScene::muteCallback, this));
-    auto aboutItem = createMenuItem("About", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 150), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
-    auto closeItem = createMenuItem("Quit Game", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 200), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
+    auto optionItem = createMenuItem(notmute ? "Mute" : "Unmute", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 150), CC_CALLBACK_1(MenuScene::muteCallback, this));
+    auto aboutItem = createMenuItem("About", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 250), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
+    auto closeItem = createMenuItem("Quit Game", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 350), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
 
     auto menu = Menu::create(startItem, optionItem, aboutItem, closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
@@ -108,8 +108,8 @@ bool MenuScene::init()
 
             if (itemRect.containsPoint(mousePos))
             {
-                iconLeft->setPosition(item->getPosition() - Vec2(itemRect.size.width / 2 + 25, 0));
-                iconRight->setPosition(item->getPosition() + Vec2(itemRect.size.width / 2 + 25, 0));
+                iconLeft->setPosition(item->getPosition() - Vec2(itemRect.size.width / 2 + 50, 0));
+                iconRight->setPosition(item->getPosition() + Vec2(itemRect.size.width / 2 + 50, 0));
                 iconLeft->setVisible(true);
                 iconRight->setVisible(true);
                 hovered = true;
