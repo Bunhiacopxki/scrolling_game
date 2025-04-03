@@ -36,7 +36,8 @@ bool MenuScene::init()
         background->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
         this->addChild(background, 0);
     }
-    // AudioEngine::play2d("haha/Greenpath.mp3", true, 0.5f);
+
+     AudioEngine::play2d("haha/Greenpath.mp3", true, 0.5f);
 
     auto titleImage = Sprite::create("haha/menu_name.png");
     if (titleImage == nullptr)
@@ -84,7 +85,7 @@ bool MenuScene::init()
     };
 
     auto startItem = createMenuItem("Start Game", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 50), CC_CALLBACK_1(MenuScene::menuStartCallback, this));
-    auto optionItem = createMenuItem("Options", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 100), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
+    auto optionItem = createMenuItem(notmute ? "Mute" : "Unmute", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 100), CC_CALLBACK_1(MenuScene::muteCallback, this));
     auto aboutItem = createMenuItem("About", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 150), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
     auto closeItem = createMenuItem("Quit Game", Vec2(visibleSize.width / 2, visibleSize.height / 2 - 200), CC_CALLBACK_1(MenuScene::menuCloseCallback, this));
 
@@ -138,4 +139,23 @@ void MenuScene::menuStartCallback(Ref *pSender)
 void MenuScene::menuCloseCallback(Ref *pSender)
 {
     Director::getInstance()->end();
+}
+
+void MenuScene::muteCallback(Ref* pSender)
+{
+    notmute = !notmute;
+    if (notmute) {
+        AudioEngine::stopAll();
+        auto label = dynamic_cast<Label*>(((MenuItemLabel*)pSender)->getLabel());
+        if (label) {
+            label->setString("Unmute");
+        }
+    }
+    else {
+        AudioEngine::play2d("haha/Greenpath.mp3", true, 0.5f);
+        auto label = dynamic_cast<Label*>(((MenuItemLabel*)pSender)->getLabel());
+        if (label) {
+            label->setString("Mute");
+        }
+    }
 }

@@ -384,7 +384,7 @@ bool HelloWorld::OnPhysicsContact(cocos2d::PhysicsContact &contact)
 
                 CCLOG("Player got %d gold!", goldAmount);
                 player->addGold(goldAmount);
-                if (player->gold > 40) {
+                if (player->gold > 40 && player->getMaxHp() < 7) {
                     player->setMaxHp(player->gold / 10);
                 }
                 auto goldLabel = Label::createWithTTF("+" + std::to_string(goldAmount), "fonts/Marker Felt.ttf", 40);
@@ -682,7 +682,6 @@ void HelloWorld::scheduleNextAttack() {
 
 }
 
-
 void HelloWorld::update(float delta)
 {
     if (!player->isDead)
@@ -691,6 +690,26 @@ void HelloWorld::update(float delta)
         if (!BossAttack && playerPosInTileMap.x > 12500 && playerPosInTileMap.y < 2000) {
             BossAttack = true;
             scheduleNextAttack();
+            // Giả sử bossHealthBar được khai báo là biến thành viên của lớp HelloWorld
+            if (!bossHealthBar) {
+                auto healthSprite = Sprite::create("Thinh/bossHealthBar.png");
+                bossHealthBar = ProgressTimer::create(healthSprite);
+                bossHealthBar->setType(ProgressTimer::Type::BAR);
+                // Thanh điền từ trái sang phải
+                bossHealthBar->setBarChangeRate(Vec2(1, 0));
+                bossHealthBar->setMidpoint(Vec2(0, 0.5));
+
+                // Đặt vị trí ở đầu màn hình (bạn có thể thay đổi vị trí theo ý muốn)
+                auto visibleSize = Director::getInstance()->getVisibleSize();
+                bossHealthBar->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - healthSprite->getContentSize().height / 2 - 10));
+
+                // Thêm vào scene với thứ tự z phù hợp
+                uiLayer->addChild(bossHealthBar, 9999);
+
+                // Khởi tạo phần trăm ban đầu là 100%
+                bossHealthBar->setPercentage(100);
+            }
+
         }
         player->update(delta);
         boss->update(delta);
@@ -702,7 +721,21 @@ void HelloWorld::update(float delta)
         uiLayer->setPosition(this->getPosition() * -1);
         std::string goldText = "Gold: " + std::to_string(player->gold);
         goldLabel->setString(goldText);
-        
+        if (bossHealthBar && boss->getHealth() > 0) {
+            float percentage = (static_cast<float>(boss->getHealth()) / boss->getMaxheath()) * 100.0f;
+            bossHealthBar->setPercentage(percentage);
+        }
+        if (boss->getHealth() <= 0 && bossHealthBar) {
+            bossHealthBar->setVisible(false);
+            // hoặc: this->removeChild(bossHealthBar);
+        }
+        if (bossHealthBar) {
+            CCLOG("Cập nhật thanh máu: %f", bossHealthBar->getPercentage());
+        }
+        else {
+            CCLOG("bossHealthBar đã bị mất!");
+        }
+
         /*CCLOG("Vị trí nhân vật trên tileMap: x = %f, y = %f", playerPosInTileMap.x, playerPosInTileMap.y);
         CCLOG("BossAttack = %d", BossAttack);*/
     }

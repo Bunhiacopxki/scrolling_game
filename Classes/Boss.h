@@ -22,6 +22,9 @@ public:
    
     void setTarget(Vec2 tar);
     int getHealth();
+    int getMaxheath() {
+        return maxHeath;
+    }
 
     void DieAnimation();
     void update(float delta);
@@ -36,6 +39,7 @@ public:
     bool isDead = false;
 private:
     int health  = 200;
+    int maxHeath = 200;
     int collisionCount  = 0;
     bool isattack   = false;
     bool isdie  = false;

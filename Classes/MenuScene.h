@@ -12,8 +12,11 @@ public:
 
     void menuStartCallback(cocos2d::Ref* pSender);
     void menuCloseCallback(cocos2d::Ref* pSender);
+    void muteCallback(cocos2d::Ref* pSender);
 
     CREATE_FUNC(MenuScene);
+
+    bool notmute = true;
 };
 
 #endif // __MENU_SCENE_H__

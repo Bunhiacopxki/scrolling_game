@@ -65,6 +65,8 @@ private:
     Board *board;
     Board *live;
     bool BossAttack = false;
+    ProgressTimer* bossHealthBar = nullptr;
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__
