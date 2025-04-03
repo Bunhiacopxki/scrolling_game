@@ -11,12 +11,13 @@
    - Mở terminal/cmd và chuyển đến thư mục chứa Cocos2d-x
    - Chạy lệnh sau để tạo dự án:
      ```sh
+     cd cocos2d-x-4.0\cocos2d-x-4.0
      cocos new BTL_Game_3 -l cpp -p com.btl3.epicgame
      ```
 3. **Cấu hình CMake**
    - Chuyển vào thư mục `cocos2d-x-4.0`:
      ```sh
-     cd cocos2d-x-4.0
+     cd cocos2d-x-4.0\cocos2d-x-4.0\BTL_Game_3\proj.win32
      ```
    - Chạy lệnh để tạo project với Visual Studio 2022:
      ```sh
